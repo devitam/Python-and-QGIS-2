@@ -18,6 +18,8 @@ Lo anterior nos llevó al método 2. Al hacer la búsqueda de las municipalidade
 
 Entendiendo que el método 2 fue posible porque se trataba de relativamente pocos municipios, tratamos de hacer las búsquedas automáticamente (y lo logramos). Creamos una cuenta en Google Cloud y obtuvimos una API key. Desde la línea 86 del código está la búsqueda. Usando las bases creadas anteriormente logramos obtener los mismos puntos que bajando la información a mano. Nos quedamos con este procedimiento al final. El código fue adaptado desde el [Github de Google Maps](https://github.com/googlemaps/google-maps-services-python).
 
+En la carpeta, están los archivos csv. El archivo Corrientes2.csv es el que contiene los puntos de las capitales municipales.
+
 ## Shapfiles
 
 Los archivos shape que usamos como boundaries de Corrientes están [aquí](https://datos.gob.ar/dataset/ign-unidades-territoriales/archivo/ign_01.02.02). La provincia de Corrientes tiene como IN1 = 18. Es decir, 18 para provincia, 18... para municipios.
@@ -32,12 +34,12 @@ Para obtener las rutas nacionales y provinciales en un mismo shape en QGIS: Vect
 
 ## Networks
 
-Creamos esta layer con el objetivo de unir los puntos de las capitales con las rutas para que pueda conectarlas. Para esto usamos v.distance desde capitales hacia rutas y arrojó los puntos más próximos y la distancia. Luego unimos rutas con distancia en una sola layer.
+Creamos esta layer con el objetivo de unir los puntos de las capitales con las rutas para que pueda conectarlas (carpeta rutas conectadas con los shapefiles). Para esto usamos v.distance desde capitales hacia rutas y arrojó los puntos más próximos y la distancia. Luego unimos rutas con distancia en una sola layer.
 
-A la layer anterior le añadimos una variable cost que mide el costo en pesos por kilómetro. Para calcularla tomamos el consumo de nafta de un auto promedio ([ver aquí](https://siomaa.com:8082/Documents/Reports/informe_Parque_junio_2020.pdf?name=Parque%20Automotor%20jun%202020&date=01-07-2020)), que utiliza 6.2 litros de nafta cada 100 km. Así, este auto promedio consume un litro de nafta cada 16.13 kilómetros.
+Tomamos los vértices y calculamos la distancia entre los puntos más próximos y las capitales. A esta layer le añadimos una variable cost que mide el costo en pesos por kilómetro. Para calcularla tomamos el consumo de nafta de un auto promedio ([ver aquí](https://siomaa.com:8082/Documents/Reports/informe_Parque_junio_2020.pdf?name=Parque%20Automotor%20jun%202020&date=01-07-2020)), que utiliza 6.2 litros de nafta cada 100 km. Así, este auto promedio consume un litro de nafta cada 16.13 kilómetros.
 
 Por otro lado, el precio promedio de nafta (premium) en Corrientes, a agosto de 2021, es de $ 103,78 por litro de nafta ([ver aquí](http://datos.minem.gob.ar/dataset/precios-en-surtidor/archivo/80ac25de-a44a-4445-9215-090cf55cfda5?filters=provincia%3ACORRIENTES%7Cproducto%3ANafta+(premium)+de+m%C3%A1s+de+95+Ron)), por lo que el precio de nafta por kilómetro es $ 6.43 ($ 103.78 / 16.13).
 
 ## Matriz OD
 
-Teniendo los puntos de las capitales departamentales, las rutas que los unen y el costo promedio por kilómetro, usamos QNEAT para obtener la matriz OD. Se seteó default speed en 90 (km/h) y Topology Tolerance en 0.0001.
+Teniendo los puntos de las capitales departamentales, las rutas que los unen y el costo promedio por kilómetro, usamos QNEAT para obtener la matriz OD. Se seteó default speed en 90 (km/h) y Topology Tolerance en 0.0001. Es una archivo .csv en la carpeta Matriz OD
