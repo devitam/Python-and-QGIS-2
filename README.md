@@ -16,7 +16,7 @@ Lo anterior nos llevó al método 2. Al hacer la búsqueda de las municipalidade
 
 3) Python.
 
-Entendiendo que el método 2 fue posible porque se trataba de relativamente pocos municipios, tratamos de hacer las búsquedas automáticamente (y lo logramos). Creamos una cuenta en Google Cloud y obtuvimos una API key. Desde la línea 84 del código está la búsqueda. Usando las bases creadas anteriormente logramos obtener los mismos puntos que bajando la información a mano. Nos quedamos con este procedimiento al final. El código fue adaptado desde el [Github de Google Maps](https://github.com/googlemaps/google-maps-services-python).
+Entendiendo que el método 2 fue posible porque se trataba de relativamente pocos municipios, tratamos de hacer las búsquedas automáticamente (y lo logramos). Creamos una cuenta en Google Cloud y obtuvimos una API key. Desde la línea 86 del código está la búsqueda. Usando las bases creadas anteriormente logramos obtener los mismos puntos que bajando la información a mano. Nos quedamos con este procedimiento al final. El código fue adaptado desde el [Github de Google Maps](https://github.com/googlemaps/google-maps-services-python).
 
 ## Shapfiles
 
