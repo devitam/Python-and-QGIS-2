@@ -26,7 +26,7 @@ Los archivos shape de rutas nacionales se encuentran [aquí](https://datos.trans
 
 Los archivos shape de rutas provinciales se encuentran [aquí](https://datos.transporte.gob.ar/dataset/rutas-provinciales).
 
-No encontramos archivos shape sobre calles. Esto es importante porque implica que, a la hora de calcular costos, éstos serán mayores.
+No encontramos archivos shape sobre calles. Esto es importante porque implica que, a la hora de calcular costos, éstos serán mayores. Además, porque los puntos de las capitales departamentales no están conectados usando únicamente las rutas.
 
 Para obtener las rutas nacionales y provinciales en un mismo shape en QGIS: Vectorial (Vector) >> Herramientas de gestión de datos (Data Management Tools) >> Unir capas vectoriales (Merge Shapefiles to one), ahí seleccionamos las capas de rutas nacionales y provinciales, y la exportamos como shapefile.
 
