@@ -1,0 +1,135 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Aug  5 13:18:37 2021
+
+@author: Mariano
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jul  6 10:11:09 2021
+
+@author: Mariano
+"""
+
+"""
+
+#### Primeros pasos
+
+- instalar BeautifulSoup
+
+Para eso, escribir en anaconda prompt pip install beautifulsoup4
+
+- instalar requests
+
+Para eso, escribir en anaconda prompt pip install requests
+
+- instalar lxml parser
+
+Para eso, escribir en anaconda prompt pip install lxml
+
+Tener en claro que el objetivo es pasar de una tabla en HTML a un DataFrame
+que se puede exportar a un csv.
+
+"""
+
+# Llamo requests y BeautifulSoup que los instalé previamente.
+import requests
+from bs4 import BeautifulSoup
+#Importo pandas para visualizar y después para exportar a csv.
+import pandas as pd
+# Importo unicode para que exporte los datos sin tilde.
+import unicodedata
+
+# Copio la página
+url = 'https://es.wikipedia.org/wiki/Anexo:Departamentos_de_la_provincia_de_Corrientes'
+page = requests.get(url)
+#page
+
+# Pego la página
+soup = BeautifulSoup(page.text, "lxml")
+
+# Saco la cabecera de la tabla
+table_data = soup.find("table", attrs = {"wikitable"})
+headers = []
+for i in table_data.find_all("th"):
+    title = i.text.strip()
+    headers.append(title)
+
+# Armo la base de datos (data frame) con las cabeceras como columnas
+df = pd.DataFrame(columns = headers)
+
+# Selecciono las filas de la tabla y las guardo en row_data. Como las filas están como una lista y yo quiero separar cada elemento uso strip
+for j in table_data.find_all('tr')[1:]:
+        row_data = j.find_all('td')
+        row = [tr.text.strip() for tr in row_data]
+        df.loc[len(df)] = row
+
+# Visualizo la tabla
+df
+
+# Me quedo con las columnas que quiero (Departamento y Cabecera)
+df = df.drop(columns = headers[2:])
+
+# Para usar en Geocode de MMQGIS, necesito una columna para country, una para state y renombrar cabecera como city.
+Country = ["Argentina"] * len(df)
+State = ["Corrientes"] * len(df)
+df["Country"] = Country
+df["State"] = State
+
+list = ["Departamento", "City", "Country", "State"]
+
+df.columns = list
+#Exporta la tabla como csv.
+df.to_csv("Corrientes.csv", encoding="utf-8-sig", index = False)
+
+##############################################################################
+#                          Arreglo el problema                               #
+##############################################################################
+
+# Como no funcionó, tomamos la misma tabla, pero armamos una varaible string que busque las direcciones en Google Geocode
+
+Concat = df["Country"] + ", " + df["State"] + ", " + df["Departamento"] + ", " + "Municipalidad de " + df["City"]
+
+import googlemaps
+# from datetime import datetime
+
+gmaps = googlemaps.Client(key = "YOUR-API-KEY-HERE")
+
+# Para poder hacer muchas consultas, es mejor usar un loop. Armo una lista que tenga los resultados de la búsqueda.
+geocode_result = []
+
+# El loop hace lo siguiente: llame query al i = 0 en Concat (Municipalidad de Bella Vista). Haga la búsqueda de la dirección de esa municipalidad y llamale geo. Guardá el resultado de esa búsqueda en geocode_result. Volvé a hacer lo mismo con i = 1 y repetí hasta que termine Concat.
+for i in Concat:
+    query = i
+    geo = gmaps.geocode(query)
+    geocode_result.append(geo)
+
+# Geocode da como resultado listas y diccionarios anidados. Es necesario extraer la información que nos interesa.
+
+# Armo un data frame
+variables = ["Lat", "Long"]
+df2 = pd.DataFrame(columns = (variables))
+
+for j in range(25):
+        lat = geocode_result[j][0]["geometry"]["location"]["lat"]
+        long = geocode_result[j][0]["geometry"]["location"]["lng"]
+        row = [lat, long]
+        df2.loc[len(df2)] = row
+
+frames = [df, df2]
+df = pd.concat(frames, axis = 1)
+
+#Quito las tildes y reemplazo la ñ por n. Va a ser útil para QGIS.
+df = df.replace('Caá Catí (o Nuestra Señora del Rosario de Caá Catí)','Caá Catí (o Nuestra Senora del Rosario de Caá Catí)')
+
+t = []
+for i in range(25):
+    s = df["City"][i]
+    trans_tab = dict.fromkeys(map(ord, u'\u0301\u0308'), None)
+    s = unicodedata.normalize('NFKC', unicodedata.normalize('NFKD', s).translate(trans_tab))
+    t.append(s)
+
+df["City"] = t
+
+df.to_csv("Corrientes2.csv", encoding="utf-8-sig", index = False)
