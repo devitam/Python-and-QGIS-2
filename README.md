@@ -2,7 +2,7 @@
 
 ## Geocodes
 
-Primero, para obtener información de los puntos de las capitales departamentales buscamos información en Google y dimos con el siguiente [link](https://es.wikipedia.org/wiki/Anexo:Departamentos_de_la_provincia_de_Corrientes). En la carpeta Geocode, se encuentra el código correspondiente en python haciendo scrapping para obtener las capitales departamentales y guardarlas en un csv para poder usarla en MMQGIS. Para obtener las coordenadas de las capitales departamentales seguimos tres procedimientos.
+Primero, para obtener información de los puntos de las capitales departamentales buscamos información en Google y dimos con el siguiente [link](https://es.wikipedia.org/wiki/Anexo:Departamentos_de_la_provincia_de_Corrientes). En la carpeta Geocode, se encuentra el código correspondiente en python haciendo scrapping para obtener las capitales departamentales y guardarlas en un csv para poder usarla en QGIS. Para obtener las coordenadas de las capitales departamentales seguimos tres procedimientos.
 
 1) MMQGIS.
 
