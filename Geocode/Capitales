@@ -94,7 +94,7 @@ Concat = df["Country"] + ", " + df["State"] + ", " + df["Departamento"] + ", " +
 import googlemaps
 # from datetime import datetime
 
-gmaps = googlemaps.Client(key = "YOUR-API-KEY-HERE")
+gmaps = googlemaps.Client(key = "AIzaSyAslDtZJHYRYZvfDTrPzlJlBmxTlMOi3YM")
 
 # Para poder hacer muchas consultas, es mejor usar un loop. Armo una lista que tenga los resultados de la búsqueda.
 geocode_result = []
