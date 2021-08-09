@@ -34,7 +34,7 @@ Para obtener las rutas nacionales y provinciales en un mismo shape en QGIS: Vect
 
 ## Networks
 
-Creamos esta layer con el objetivo de unir los puntos de las capitales con las rutas para que pueda conectarlas (carpeta rutas conectadas con los shapefiles). Para esto usamos v.distance desde capitales hacia rutas y arrojó los puntos más próximos y la distancia. Luego unimos rutas con distancia en una sola layer.
+Creamos esta layer con el objetivo de unir los puntos de las capitales con las rutas para que pueda conectarlas ([aquí](AIzaSyAslDtZJHYRYZvfDTrPzlJlBmxTlMOi3YM)). Para esto usamos v.distance desde capitales hacia rutas y arrojó los puntos más próximos y la distancia. Luego unimos rutas con distancia en una sola layer.
 
 Tomamos los vértices y calculamos la distancia entre los puntos más próximos y las capitales. A esta layer le añadimos una variable cost que mide el costo en pesos por kilómetro. Para calcularla tomamos el consumo de nafta de un auto promedio ([ver aquí](https://siomaa.com:8082/Documents/Reports/informe_Parque_junio_2020.pdf?name=Parque%20Automotor%20jun%202020&date=01-07-2020)), que utiliza 6.2 litros de nafta cada 100 km. Así, este auto promedio consume un litro de nafta cada 16.13 kilómetros.
 
@@ -42,4 +42,4 @@ Por otro lado, el precio promedio de nafta (premium) en Corrientes, a agosto de 
 
 ## Matriz OD
 
-Teniendo los puntos de las capitales departamentales, las rutas que los unen y el costo promedio por kilómetro, usamos QNEAT para obtener la matriz OD. Se seteó default speed en 90 (km/h) y Topology Tolerance en 0.0001. Es una archivo .csv en la carpeta Matriz OD
+Teniendo los puntos de las capitales departamentales, las rutas que los unen y el costo promedio por kilómetro, usamos QNEAT para obtener la matriz OD. Se seteó default speed en 90 (km/h) y Topology Tolerance en 0.0001. Es una archivo .csv en la carpeta Matriz OD.
